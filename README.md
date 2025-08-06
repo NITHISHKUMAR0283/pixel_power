@@ -1,1 +1,1 @@
-[live url]("https://pixel-power-xi.vercel.app/")
+[live url](https://pixel-power-xi.vercel.app/)
