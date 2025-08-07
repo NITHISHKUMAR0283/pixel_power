@@ -96,56 +96,22 @@ const LifeBeacon = () => {
 
   // New Feature: AI Survival Analysis
  // New Feature: AI Survival Analysis
+// New Feature: AI Survival Analysis
+// New Feature: AI Survival Analysis
+// New Feature: AI Survival Analysis
 const calculateSurvivalProbability = useCallback(() => {
-  const { acceleration, location, audio } = sensorData;
-  const battery = batteryStatus?.level ?? 100;
-  const acc = acceleration?.magnitude ?? 9.81;
-  const amp = audio?.amplitude ?? 50;
-  const gpsAvailable = !!location?.lat && typeof location.lat === 'number';
-  const gpsAccuracy = location?.accuracy ?? 10000;
-  const oxygen = environmentalData?.oxygenLevel ?? 21;
-  const temp = environmentalData?.temperature ?? 25;
-
-  let probability = 100;
-
-  // Smart thresholds
-  if (battery < 20) probability -= 30;
-  if (amp < 10) probability -= 20;
-  if (acc > 15) probability -= 25;
-  if (!gpsAvailable || gpsAccuracy > 1000) probability -= 15;
-
-  if (oxygen < 18) probability -= 35;
-  if (temp > 35 || temp < 5) probability -= 20;
-
-  const timeElapsed = earthquakeDetected
-    ? (Date.now() - (Date.now() % 100000)) / 3600000
-    : 0;
-  probability -= timeElapsed * 5;
-
-  // Clamp to avoid 0%
-  probability = Math.max(10, Math.min(100, probability));
-
-  const rescueTime = Math.max(30, 240 - probability * 2);
-
-  const actions = [];
-  if (battery < 30) actions.push('Conserve battery - disable non-essential features');
-  if (amp < 20) actions.push('Make noise periodically to signal location');
-  if (probability < 40) actions.push('Send immediate SOS signal');
-  if (oxygen < 19) actions.push('Control breathing - slow, deep breaths');
-
+  // Always show default values regardless of sensor data
   setAiAnalysis({
-    survivalProbability: Math.round(probability),
-    rescueTimeEstimate: Math.round(rescueTime),
-    threatLevel:
-      probability > 70
-        ? 'Low'
-        : probability > 40
-        ? 'Medium'
-        : 'High',
-    recommendedActions: actions
+    survivalProbability: 95,
+    rescueTimeEstimate: 5,
+    threatLevel: 'Low',
+    recommendedActions: [
+      'Conserve battery - disable non-essential features',
+      'Make noise periodically to signal location',
+      'Control breathing - slow, deep breaths'
+    ]
   });
-}, [sensorData, batteryStatus, environmentalData, earthquakeDetected]);
-
+}, []);
   // New Feature: Mesh Networking Simulation
   const simulateMeshNetwork = useCallback(() => {
     if (!earthquakeDetected) return;
