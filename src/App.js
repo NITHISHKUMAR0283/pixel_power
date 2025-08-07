@@ -842,6 +842,230 @@ useEffect(() => {
       </div>
 
       <div className="px-4 pb-6 space-y-6">
+         <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/30 shadow-xl">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="p-2 bg-purple-500/20 rounded-xl">
+              <Activity size={20} className="text-purple-400" />
+            </div>
+            <h3 className="font-semibold text-lg">📊 Live Sensor Data</h3>
+            <div className="ml-auto flex items-center gap-2 px-3 py-1 bg-emerald-500/20 rounded-full">
+              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+              <span className="text-xs text-emerald-400 font-medium">REAL-TIME</span>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Enhanced Motion Data */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <Waves size={16} className="text-blue-400" />
+                <span className="text-slate-300 font-medium">Acceleration (m/s²)</span>
+                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
+                  sensorData.acceleration.magnitude > 10 ? 'bg-red-500 text-white' :
+                  sensorData.acceleration.magnitude > 5 ? 'bg-yellow-500 text-black' :
+                  'bg-green-500 text-white'
+                }`}>
+                  {sensorData.acceleration.magnitude > 10 ? 'HIGH' :
+                   sensorData.acceleration.magnitude > 5 ? 'MODERATE' : 'NORMAL'}
+                </div>
+              </div>
+              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">X-Axis:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">{sensorData.acceleration.x}</span>
+                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-blue-400 transition-all duration-300"
+                          style={{ 
+                            width: `${Math.min(100, Math.abs(sensorData.acceleration.x) * 10)}%`,
+                            marginLeft: sensorData.acceleration.x < 0 ? '50%' : '0%'
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Y-Axis:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">{sensorData.acceleration.y}</span>
+                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-purple-400 transition-all duration-300"
+                          style={{ 
+                            width: `${Math.min(100, Math.abs(sensorData.acceleration.y) * 10)}%`,
+                            marginLeft: sensorData.acceleration.y < 0 ? '50%' : '0%'
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Z-Axis:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">{sensorData.acceleration.z}</span>
+                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-green-400 transition-all duration-300"
+                          style={{ 
+                            width: `${Math.min(100, Math.abs(sensorData.acceleration.z) / 15 * 100)}%`
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="border-t border-slate-600 pt-2 mt-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-blue-400 font-semibold">Total Magnitude:</span>
+                      <span className="text-blue-400 font-bold text-lg">{sensorData.acceleration.magnitude}</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-xs text-slate-500 mt-3 space-y-1">
+                  <div>Source: {sensorData.acceleration.source || 'unknown'}</div>
+                  <div>Updated: {sensorData.acceleration.timestamp ? 
+                    new Date(sensorData.acceleration.timestamp).toLocaleTimeString() : 'never'}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Location Data */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <MapPin size={16} className="text-emerald-400" />
+                <span className="text-slate-300 font-medium">GPS Location</span>
+                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
+                  typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'bg-green-500 text-white' :
+                  typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'bg-yellow-500 text-black' :
+                  'bg-red-500 text-white'
+                }`}>
+                  {typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'PRECISE' :
+                   typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'GOOD' : 'POOR'}
+                </div>
+              </div>
+              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Latitude:</span>
+                    <span className="text-white">{sensorData.location.lat || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Longitude:</span>
+                    <span className="text-white">{sensorData.location.lng || 'N/A'}</span>
+                  </div>
+                  <div className="border-t border-slate-600 pt-2 mt-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-400">Accuracy:</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`font-semibold ${
+                          typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'text-emerald-400' :
+                          typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'text-yellow-400' : 
+                          'text-red-400'
+                        }`}>
+                          ±{sensorData.location.accuracy || 'N/A'}m
+                        </span>
+                        <div className="flex">
+                          {Array.from({length: 5}, (_, i) => (
+                            <div 
+                              key={i} 
+                              className={`w-2 h-2 rounded-full mr-1 ${
+                                typeof sensorData.location.accuracy === 'number' && 
+                                sensorData.location.accuracy <= (i + 1) * 20 ? 'bg-emerald-400' : 'bg-slate-600'
+                              }`}
+                            ></div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Audio Analysis */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <Radio size={16} className="text-orange-400" />
+                <span className="text-slate-300 font-medium">Audio Analysis</span>
+                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
+                  sensorData.audio.amplitude > 50 ? 'bg-green-500 text-white' :
+                  sensorData.audio.amplitude > 20 ? 'bg-yellow-500 text-black' :
+                  'bg-red-500 text-white'
+                }`}>
+                  {sensorData.audio.amplitude > 50 ? 'CLEAR' :
+                   sensorData.audio.amplitude > 20 ? 'MODERATE' : 'WEAK'}
+                </div>
+              </div>
+              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Amplitude:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">{sensorData.audio.amplitude}</span>
+                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-orange-400 transition-all duration-300"
+                          style={{ width: `${Math.min(100, sensorData.audio.amplitude)}%` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Quality:</span>
+                    <span className={`font-semibold ${
+                      sensorData.audio.amplitude > 50 ? 'text-emerald-400' : 
+                      sensorData.audio.amplitude > 20 ? 'text-yellow-400' : 'text-red-400'
+                    }`}>
+                      {sensorData.audio.amplitude > 50 ? 'Excellent' : 
+                       sensorData.audio.amplitude > 20 ? 'Good' : 'Poor'}
+                    </span>
+                  </div>
+                  <div className="border-t border-slate-600 pt-2">
+                    <div className="text-xs text-slate-400">
+                      Air circulation: {sensorData.audio.amplitude > 30 ? 'Good' : sensorData.audio.amplitude > 15 ? 'Limited' : 'Critical'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enhanced Orientation Data */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 mb-3">
+                <Navigation size={16} className="text-cyan-400" />
+                <span className="text-slate-300 font-medium">Device Orientation</span>
+                <div className="ml-auto px-2 py-1 rounded text-xs font-semibold bg-cyan-500 text-white">
+                  ACTIVE
+                </div>
+              </div>
+              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-400">Compass:</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white">{sensorData.gyroscope.alpha}°</span>
+                      <div className="w-8 h-8 border-2 border-cyan-400 rounded-full relative">
+                        <div 
+                          className="absolute w-0.5 h-3 bg-cyan-400 top-0 left-1/2 transform -translate-x-1/2 origin-bottom transition-all duration-300"
+                          style={{ transform: `translateX(-50%) rotate(${sensorData.gyroscope.alpha}deg)` }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Tilt Front/Back:</span>
+                    <span className="text-white">{sensorData.gyroscope.beta}°</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Tilt Left/Right:</span>
+                    <span className="text-white">{sensorData.gyroscope.gamma}°</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* AI Survival Analysis - New Feature */}
         <div className="bg-gradient-to-br from-emerald-800/80 to-teal-700/80 backdrop-blur-sm rounded-2xl p-6 border border-emerald-600/30 shadow-xl">
           <div className="flex justify-between items-center mb-6">
@@ -1212,230 +1436,7 @@ useEffect(() => {
         </div>
 
         {/* Enhanced Sensor Data Display */}
-        <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/30 shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-purple-500/20 rounded-xl">
-              <Activity size={20} className="text-purple-400" />
-            </div>
-            <h3 className="font-semibold text-lg">📊 Live Sensor Data</h3>
-            <div className="ml-auto flex items-center gap-2 px-3 py-1 bg-emerald-500/20 rounded-full">
-              <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-emerald-400 font-medium">REAL-TIME</span>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Enhanced Motion Data */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-3">
-                <Waves size={16} className="text-blue-400" />
-                <span className="text-slate-300 font-medium">Acceleration (m/s²)</span>
-                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
-                  sensorData.acceleration.magnitude > 10 ? 'bg-red-500 text-white' :
-                  sensorData.acceleration.magnitude > 5 ? 'bg-yellow-500 text-black' :
-                  'bg-green-500 text-white'
-                }`}>
-                  {sensorData.acceleration.magnitude > 10 ? 'HIGH' :
-                   sensorData.acceleration.magnitude > 5 ? 'MODERATE' : 'NORMAL'}
-                </div>
-              </div>
-              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">X-Axis:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white">{sensorData.acceleration.x}</span>
-                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-blue-400 transition-all duration-300"
-                          style={{ 
-                            width: `${Math.min(100, Math.abs(sensorData.acceleration.x) * 10)}%`,
-                            marginLeft: sensorData.acceleration.x < 0 ? '50%' : '0%'
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Y-Axis:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white">{sensorData.acceleration.y}</span>
-                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-purple-400 transition-all duration-300"
-                          style={{ 
-                            width: `${Math.min(100, Math.abs(sensorData.acceleration.y) * 10)}%`,
-                            marginLeft: sensorData.acceleration.y < 0 ? '50%' : '0%'
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Z-Axis:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white">{sensorData.acceleration.z}</span>
-                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-green-400 transition-all duration-300"
-                          style={{ 
-                            width: `${Math.min(100, Math.abs(sensorData.acceleration.z) / 15 * 100)}%`
-                          }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="border-t border-slate-600 pt-2 mt-3">
-                    <div className="flex justify-between items-center">
-                      <span className="text-blue-400 font-semibold">Total Magnitude:</span>
-                      <span className="text-blue-400 font-bold text-lg">{sensorData.acceleration.magnitude}</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-xs text-slate-500 mt-3 space-y-1">
-                  <div>Source: {sensorData.acceleration.source || 'unknown'}</div>
-                  <div>Updated: {sensorData.acceleration.timestamp ? 
-                    new Date(sensorData.acceleration.timestamp).toLocaleTimeString() : 'never'}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced Location Data */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-3">
-                <MapPin size={16} className="text-emerald-400" />
-                <span className="text-slate-300 font-medium">GPS Location</span>
-                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
-                  typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'bg-green-500 text-white' :
-                  typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'bg-yellow-500 text-black' :
-                  'bg-red-500 text-white'
-                }`}>
-                  {typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'PRECISE' :
-                   typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'GOOD' : 'POOR'}
-                </div>
-              </div>
-              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Latitude:</span>
-                    <span className="text-white">{sensorData.location.lat || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Longitude:</span>
-                    <span className="text-white">{sensorData.location.lng || 'N/A'}</span>
-                  </div>
-                  <div className="border-t border-slate-600 pt-2 mt-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-slate-400">Accuracy:</span>
-                      <div className="flex items-center gap-2">
-                        <span className={`font-semibold ${
-                          typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 10 ? 'text-emerald-400' :
-                          typeof sensorData.location.accuracy === 'number' && sensorData.location.accuracy <= 50 ? 'text-yellow-400' : 
-                          'text-red-400'
-                        }`}>
-                          ±{sensorData.location.accuracy || 'N/A'}m
-                        </span>
-                        <div className="flex">
-                          {Array.from({length: 5}, (_, i) => (
-                            <div 
-                              key={i} 
-                              className={`w-2 h-2 rounded-full mr-1 ${
-                                typeof sensorData.location.accuracy === 'number' && 
-                                sensorData.location.accuracy <= (i + 1) * 20 ? 'bg-emerald-400' : 'bg-slate-600'
-                              }`}
-                            ></div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced Audio Analysis */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-3">
-                <Radio size={16} className="text-orange-400" />
-                <span className="text-slate-300 font-medium">Audio Analysis</span>
-                <div className={`ml-auto px-2 py-1 rounded text-xs font-semibold ${
-                  sensorData.audio.amplitude > 50 ? 'bg-green-500 text-white' :
-                  sensorData.audio.amplitude > 20 ? 'bg-yellow-500 text-black' :
-                  'bg-red-500 text-white'
-                }`}>
-                  {sensorData.audio.amplitude > 50 ? 'CLEAR' :
-                   sensorData.audio.amplitude > 20 ? 'MODERATE' : 'WEAK'}
-                </div>
-              </div>
-              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Amplitude:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white">{sensorData.audio.amplitude}</span>
-                      <div className="w-16 h-2 bg-slate-600 rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-orange-400 transition-all duration-300"
-                          style={{ width: `${Math.min(100, sensorData.audio.amplitude)}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Quality:</span>
-                    <span className={`font-semibold ${
-                      sensorData.audio.amplitude > 50 ? 'text-emerald-400' : 
-                      sensorData.audio.amplitude > 20 ? 'text-yellow-400' : 'text-red-400'
-                    }`}>
-                      {sensorData.audio.amplitude > 50 ? 'Excellent' : 
-                       sensorData.audio.amplitude > 20 ? 'Good' : 'Poor'}
-                    </span>
-                  </div>
-                  <div className="border-t border-slate-600 pt-2">
-                    <div className="text-xs text-slate-400">
-                      Air circulation: {sensorData.audio.amplitude > 30 ? 'Good' : sensorData.audio.amplitude > 15 ? 'Limited' : 'Critical'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Enhanced Orientation Data */}
-            <div className="space-y-3">
-              <div className="flex items-center gap-2 mb-3">
-                <Navigation size={16} className="text-cyan-400" />
-                <span className="text-slate-300 font-medium">Device Orientation</span>
-                <div className="ml-auto px-2 py-1 rounded text-xs font-semibold bg-cyan-500 text-white">
-                  ACTIVE
-                </div>
-              </div>
-              <div className="bg-slate-700/50 p-4 rounded-xl font-mono text-sm border border-slate-600/30">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-slate-400">Compass:</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-white">{sensorData.gyroscope.alpha}°</span>
-                      <div className="w-8 h-8 border-2 border-cyan-400 rounded-full relative">
-                        <div 
-                          className="absolute w-0.5 h-3 bg-cyan-400 top-0 left-1/2 transform -translate-x-1/2 origin-bottom transition-all duration-300"
-                          style={{ transform: `translateX(-50%) rotate(${sensorData.gyroscope.alpha}deg)` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Tilt Front/Back:</span>
-                    <span className="text-white">{sensorData.gyroscope.beta}°</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-slate-400">Tilt Left/Right:</span>
-                    <span className="text-white">{sensorData.gyroscope.gamma}°</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+       
 
         {/* Advanced Physics Analysis */}
         <div className="bg-gradient-to-br from-slate-800/80 to-slate-700/80 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/30 shadow-xl">
