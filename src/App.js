@@ -675,10 +675,7 @@ const LifeBeacon = () => {
   };
 
   // Toggle flashlight simulation
-  const toggleFlashlight = () => {
-    // This would control the device flashlight in a real implementation
-    console.log('Flashlight toggled');
-  };
+  
 
   // Initialize all sensors and features
   useEffect(() => {
@@ -790,9 +787,7 @@ const LifeBeacon = () => {
     return 'text-red-400';
   };
 
-  const getSignalStrength = () => {
-    return Math.floor(Math.random() * 5) + 1;
-  };
+ 
 
   const StatusIndicator = ({ label, value, status, icon: Icon }) => (
     <div className="flex items-center justify-between p-3 bg-slate-700/50 rounded-lg border border-slate-600/30">
@@ -848,15 +843,9 @@ const LifeBeacon = () => {
               <span className="text-sm font-mono">{sensorData.acceleration.magnitude.toFixed(1)} m/s²</span>
             </div>
 
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-full">
-              <Heart size={16} className="text-red-400" />
-              <span className="text-sm font-mono">{vitalsMonitoring.heartRate} BPM</span>
-            </div>
+           
 
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-full">
-              <Wifi size={16} className="text-blue-400" />
-              <span className="text-sm font-mono">{Array(getSignalStrength()).fill('●').join('')}</span>
-            </div>
+            
           </div>
         </div>
       </div>
@@ -1145,13 +1134,7 @@ const LifeBeacon = () => {
                 <Send size={16} />
                 Send SOS
               </button>
-              <button 
-                onClick={toggleFlashlight}
-                className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg text-sm font-semibold text-black transition-all duration-200 shadow-lg"
-              >
-                <Flashlight size={16} />
-                Flash
-              </button>
+              
             </div>
           </div>
           
