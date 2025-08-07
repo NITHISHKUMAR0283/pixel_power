@@ -821,10 +821,13 @@ useEffect(() => {
               </span>
             </div>
             
-            <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-full">
-              <Activity size={16} className={Math.abs(sensorData.acceleration.magnitude) > 0.5 ? 'text-emerald-400' : 'text-slate-400'} />
-              <span className="text-sm font-mono">{sensorData.acceleration.magnitude.toFixed(1)} m/s²</span>
-            </div>
+           <div className="flex items-center gap-2 px-4 py-2 bg-slate-800/50 backdrop-blur-sm rounded-full min-w-[130px] justify-center">
+  <Activity size={16} className={Math.abs(sensorData.acceleration.magnitude) > 0.5 ? 'text-emerald-400' : 'text-slate-400'} />
+  <span className="text-sm font-mono w-[80px] text-center block">
+    {sensorData.acceleration.magnitude.toFixed(1)} m/s²
+  </span>
+</div>
+
 
            
 
