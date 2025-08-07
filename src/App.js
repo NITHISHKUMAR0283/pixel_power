@@ -29,11 +29,16 @@ const LifeBeacon = () => {
   });
 
   const [meshNetwork, setMeshNetwork] = useState({
-    connectedDevices: 0,
-    networkStrength: 0,
-    messageQueue: [],
-    lastSync: null
-  });
+  connectedDevices: 4,
+  networkStrength: 80,
+  messageQueue: [
+    "Emergency beacon active - coordinates shared",
+    "Rescue team ETA: 45 minutes",
+    "Safe zone identified 200m northwest"
+  ],
+  lastSync: new Date().toISOString()
+});
+
 
   const [vitalsMonitoring, setVitalsMonitoring] = useState({
     heartRate: 0,
@@ -894,59 +899,6 @@ useEffect(() => {
           )}
         </div>
 
-        {/* Vital Signs Monitoring - New Feature */}
-        <div className="bg-gradient-to-br from-red-800/80 to-pink-700/80 backdrop-blur-sm rounded-2xl p-6 border border-red-600/30 shadow-xl">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2 bg-red-500/20 rounded-xl">
-              <Heart size={20} className="text-red-400" />
-            </div>
-            <h3 className="font-semibold text-lg text-red-100">❤️ Vital Signs Monitor</h3>
-            <div className="ml-auto flex items-center gap-2 px-3 py-1 bg-red-500/20 rounded-full">
-              <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-red-400 font-medium">LIVE</span>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-red-900/50 p-4 rounded-xl border border-red-500/30">
-              <div className="flex items-center gap-2 mb-2">
-                <Heart size={16} className="text-red-300" />
-                <span className="text-red-300 text-sm">Heart Rate</span>
-              </div>
-              <div className="text-2xl font-bold text-white">{vitalsMonitoring.heartRate}</div>
-              <div className="text-xs text-red-300">BPM</div>
-            </div>
-            
-            <div className="bg-red-900/50 p-4 rounded-xl border border-red-500/30">
-              <div className="flex items-center gap-2 mb-2">
-                <Activity size={16} className="text-blue-300" />
-                <span className="text-blue-300 text-sm">Breathing</span>
-              </div>
-              <div className="text-2xl font-bold text-white">{vitalsMonitoring.breathing}</div>
-              <div className="text-xs text-blue-300">RPM</div>
-            </div>
-            
-            <div className="bg-red-900/50 p-4 rounded-xl border border-red-500/30">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertTriangle size={16} className={getSeverityColor(vitalsMonitoring.stressLevel)} />
-                <span className="text-yellow-300 text-sm">Stress</span>
-              </div>
-              <div className={`text-lg font-bold ${getSeverityColor(vitalsMonitoring.stressLevel)}`}>
-                {vitalsMonitoring.stressLevel}
-              </div>
-            </div>
-            
-            <div className="bg-red-900/50 p-4 rounded-xl border border-red-500/30">
-              <div className="flex items-center gap-2 mb-2">
-                <UserCheck size={16} className="text-green-300" />
-                <span className="text-green-300 text-sm">Status</span>
-              </div>
-              <div className="text-lg font-bold text-green-400">
-                {vitalsMonitoring.conscious ? 'Conscious' : 'Unconscious'}
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Mesh Network Communication - New Feature */}
         <div className="bg-gradient-to-br from-purple-800/80 to-indigo-700/80 backdrop-blur-sm rounded-2xl p-6 border border-purple-600/30 shadow-xl">
