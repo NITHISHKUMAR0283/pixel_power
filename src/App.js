@@ -108,7 +108,7 @@ const calculateSurvivalProbability = useCallback(() => {
   // Completely static AI survival values
   setAiAnalysis({
     survivalProbability: 95,
-    rescueTimeEstimate: 5,
+    rescueTimeEstimate: 1,
     threatLevel: 'Low',
     recommendedActions: [
       'Conserve battery - disable non-essential features',
