@@ -100,7 +100,7 @@ const LifeBeacon = () => {
 // New Feature: AI Survival Analysis
 // New Feature: AI Survival Analysis
 const calculateSurvivalProbability = useCallback(() => {
-  // Always show default values regardless of sensor data
+  // Completely static AI survival values
   setAiAnalysis({
     survivalProbability: 95,
     rescueTimeEstimate: 5,
@@ -112,6 +112,10 @@ const calculateSurvivalProbability = useCallback(() => {
     ]
   });
 }, []);
+useEffect(() => {
+  calculateSurvivalProbability();
+}, [calculateSurvivalProbability]);
+
   // New Feature: Mesh Networking Simulation
   const simulateMeshNetwork = useCallback(() => {
     if (!earthquakeDetected) return;
