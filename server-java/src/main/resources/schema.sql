@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS sos (
+  id IDENTITY PRIMARY KEY,
+  message VARCHAR(1024),
+  lat DOUBLE,
+  lng DOUBLE,
+  created_at TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sensor_data (
+  id IDENTITY PRIMARY KEY,
+  key_name VARCHAR(255),
+  value VARCHAR(1024),
+  created_at TIMESTAMP
+);
