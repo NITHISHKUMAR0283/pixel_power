@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/pixel_power/static/css/main.d566b664.css",
+    "main.js": "/pixel_power/static/js/main.5bc4589e.js",
+    "index.html": "/pixel_power/index.html",
+    "main.d566b664.css.map": "/pixel_power/static/css/main.d566b664.css.map",
+    "main.5bc4589e.js.map": "/pixel_power/static/js/main.5bc4589e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d566b664.css",
+    "static/js/main.5bc4589e.js"
+  ]
+}
