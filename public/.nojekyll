@@ -1,0 +1,2 @@
+# This file prevents GitHub Pages from running Jekyll on the published site
+# It can be empty; included to avoid Jekyll processing which can break SCSS conversion
